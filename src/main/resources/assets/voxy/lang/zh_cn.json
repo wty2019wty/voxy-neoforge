@@ -1,0 +1,71 @@
+{
+  "voxy.config.title": "Voxy",
+
+  "voxy.config.general": "通用",
+  "voxy.config.rendering": "渲染",
+
+  "voxy.config.general.enabled": "启用 Voxy",
+  "voxy.config.general.enabled.tooltip": "完全启用或禁用 Voxy",
+
+  "voxy.config.general.serviceThreads": "服务线程数",
+  "voxy.config.general.serviceThreads.tooltip": "服务线程池可使用的线程数量",
+
+  "voxy.config.general.useSodiumBuilder": "使用 Sodium 线程",
+  "voxy.config.general.useSodiumBuilder.tooltip": "将 Sodium 构建线程纳入 Voxy 线程池，可减少高渲染距离快速移动时的卡顿",
+
+  "voxy.config.general.ingest": "区块导入",
+  "voxy.config.general.ingest.tooltip": "启用或禁用 Voxy 将新区块转换为 LoD 的功能",
+
+  "voxy.config.general.rendering": "Voxy 渲染",
+  "voxy.config.general.rendering.tooltip": "启用或禁用 Voxy 渲染",
+
+  "voxy.config.general.subDivisionSize": "细分尺寸（像素²）",
+  "voxy.config.general.subDivisionSize.tooltip": "屏幕空间 AABB 细分为更小 LoD 的最大像素尺寸（值越小质量越高）",
+
+  "voxy.config.general.renderDistance": "渲染距离",
+  "voxy.config.general.renderDistance.tooltip": "Voxy 的渲染距离（以区块为单位）",
+
+  "voxy.config.general.environmental_fog": "启用环境雾",
+  "voxy.config.general.environmental_fog.tooltip": "启用或禁用 Voxy 渲染的环境雾效果",
+
+  "voxy.config.general.render_fog": "启用渲染雾",
+  "voxy.config.general.render_fog.tooltip": "启用或禁用渲染雾效果",
+
+  "voxy.config.general.render_statistics": "启用渲染统计",
+  "voxy.config.general.render_statistics.tooltip": "在 F3 菜单中显示渲染统计信息，用于调试",
+
+  "voxy.sodium.page.title": "Voxy",
+
+  "voxy.sodium.option.enabled": "启用 Voxy",
+  "voxy.sodium.option.enabled.tooltip": "启用或禁用 Voxy LoD 系统的总开关",
+
+  "voxy.sodium.option.enable_rendering": "LoD 渲染",
+  "voxy.sodium.option.enable_rendering.tooltip": "启用 LoD 地形渲染。禁用后数据导入仍会运行，但不显示视觉效果。",
+
+  "voxy.sodium.option.ingest_enabled": "区块导入",
+  "voxy.sodium.option.ingest_enabled.tooltip": "启用自动将已访问区块转换为 LoD 数据",
+
+  "voxy.sodium.option.render_distance": "LoD 渲染距离",
+  "voxy.sodium.option.render_distance.tooltip": "LoD 地形的渲染距离。数值乘以 32 即为区块距离。例：16 = 512 区块。",
+
+  "voxy.sodium.option.service_threads": "服务线程数",
+  "voxy.sodium.option.service_threads.tooltip": "用于 LoD 处理的后台线程数。线程越多 = LoD 生成越快，但 CPU 占用更高。",
+
+  "voxy.sodium.option.subdivision_size": "细分尺寸",
+  "voxy.sodium.option.subdivision_size.tooltip": "细分到更高细节 LoD 前的最大屏幕空间尺寸。值越低 = 细节越多，但 GPU 负载更大。",
+
+  "voxy.sodium.option.environmental_fog": "环境雾",
+  "voxy.sodium.option.environmental_fog.tooltip": "对 LoD 地形应用环境雾效果",
+
+  "voxy.sodium.option.dont_use_sodium_threads": "独立线程池",
+  "voxy.sodium.option.dont_use_sodium_threads.tooltip": "不与 Sodium 的区块构建器共享线程。如果出现卡顿请启用。",
+
+  "voxy.sodium.option.lod_boundary_buffer": "LoD 边界重叠",
+  "voxy.sodium.option.lod_boundary_buffer.tooltip": "控制原版区块与 LoD 之间的重叠。值越高 = 快速飞行时过渡越平滑，但会有轻微过度绘制。",
+
+  "voxy.sodium.option.render_statistics": "调试统计",
+  "voxy.sodium.option.render_statistics.tooltip": "在 F3 调试界面显示 LoD 渲染统计信息",
+
+  "voxy.sodium.option.earth_curve_ratio": "世界曲率",
+  "voxy.sodium.option.earth_curve_ratio.tooltip": "模拟站在球形星球上。0 = 平坦世界。值越高 = 星球越小（曲率越大）。灵感来自 Distant Horizons。"
+}

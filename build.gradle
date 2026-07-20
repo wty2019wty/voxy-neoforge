@@ -20,18 +20,15 @@ sourceSets {
             // Iris shader integration
             exclude 'me/cortex/voxy/client/iris/**'
             exclude 'me/cortex/voxy/client/core/IrisVoxyRenderPipeline.java'
-            exclude 'me/cortex/voxy/client/core/util/IrisUtil.java'
             exclude 'me/cortex/voxy/client/mixin/iris/**'
 
-            // Sodium config API (changed in Sodium 0.6.x)
-            exclude 'me/cortex/voxy/client/config/SodiumConfigBuilder.java'
-            exclude 'me/cortex/voxy/client/config/VoxyConfigMenu.java'
+            // SodiumConfigBuilder and VoxyConfigMenu re-enabled for Sodium 0.8.x API
             exclude 'me/cortex/voxy/client/config/IConfigPageSetter.java'
 
             // ModMenu integration (Fabric-only)
             exclude 'me/cortex/voxy/client/config/ModMenuIntegration.java'
 
-            // SodiumOptionsAPI integration uses Sodium 0.6.x option types (removed in 0.8.x)
+            // SodiumOptionsAPI uses old Sodium 0.6.x GUI API (OptionPage/OptionGroup removed in 0.8.x)
             exclude 'me/cortex/voxy/client/config/VoxySodiumOptions.java'
 
             // Vivecraft VR integration - ViewportSelector now NeoForge-compatible
