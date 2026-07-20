@@ -90,10 +90,10 @@ class MixinConfigValidator:
         
         if unregistered:
             self.warnings.append(f"Found {len(unregistered)} unregistered mixins that may need attention")
-            print(f"  {YELLOW}⚠{NC} {len(unregistered)} unregistered mixins")
+            print(f"  {YELLOW}[!]{NC} {len(unregistered)} unregistered mixins")
         else:
             self.passed_checks.append("All active mixins are properly registered")
-            print(f"  {GREEN}✓{NC} All active mixins registered")
+            print(f"  {GREEN}[OK]{NC} All active mixins registered")
         
         print()
     
@@ -111,10 +111,10 @@ class MixinConfigValidator:
         
         if not blockable_excluded:
             self.errors.append("MixinBlockableEventLoop not excluded but removed from mixin config")
-            print(f"  {RED}✗{NC} MixinBlockableEventLoop should be excluded (removed in Issue #2)")
+            print(f"  {RED}[FAIL]{NC} MixinBlockableEventLoop should be excluded (removed in Issue #2)")
         else:
             self.passed_checks.append("MixinBlockableEventLoop properly excluded")
-            print(f"  {GREEN}✓{NC} MixinBlockableEventLoop excluded")
+            print(f"  {GREEN}[OK]{NC} MixinBlockableEventLoop excluded")
         
         print()
     
@@ -157,9 +157,9 @@ class MixinConfigValidator:
         if remap_issues:
             for file, target, issue in remap_issues:
                 self.warnings.append(f"{file}: {target} - {issue}")
-                print(f"  {YELLOW}⚠{NC} {file}: {issue}")
+                print(f"  {YELLOW}[!]{NC} {file}: {issue}")
         else:
-            print(f"  {GREEN}✓{NC} Remap flags correctly applied")
+            print(f"  {GREEN}[OK]{NC} Remap flags correctly applied")
         
         print()
     
@@ -183,20 +183,20 @@ class MixinConfigValidator:
                 
                 if missing_fields:
                     self.errors.append(f"{json_file}: Missing required fields: {missing_fields}")
-                    print(f"  {RED}✗{NC} {os.path.basename(json_file)}: Missing fields")
+                    print(f"  {RED}[FAIL]{NC} {os.path.basename(json_file)}: Missing fields")
                 else:
-                    print(f"  {GREEN}✓{NC} {os.path.basename(json_file)}: Valid schema")
+                    print(f"  {GREEN}[OK]{NC} {os.path.basename(json_file)}: Valid schema")
                 
                 # Check for duplicates
                 if 'client' in config:
                     mixins = config['client']
                     if len(mixins) != len(set(mixins)):
                         self.errors.append(f"{json_file}: Duplicate mixin entries")
-                        print(f"  {RED}✗{NC} Duplicate entries found")
+                        print(f"  {RED}[FAIL]{NC} Duplicate entries found")
                 
             except json.JSONDecodeError as e:
                 self.errors.append(f"{json_file}: JSON parse error - {e}")
-                print(f"  {RED}✗{NC} JSON parse error")
+                print(f"  {RED}[FAIL]{NC} JSON parse error")
         
         print()
     
@@ -215,10 +215,10 @@ class MixinConfigValidator:
         if naming_issues:
             for issue in naming_issues[:5]:  # Show first 5
                 self.warnings.append(issue)
-                print(f"  {YELLOW}⚠{NC} {issue}")
+                print(f"  {YELLOW}[!]{NC} {issue}")
         else:
             self.passed_checks.append("All mixin files follow naming conventions")
-            print(f"  {GREEN}✓{NC} Naming conventions followed")
+            print(f"  {GREEN}[OK]{NC} Naming conventions followed")
         
         print()
     
@@ -240,14 +240,14 @@ class MixinConfigValidator:
         print(f"Errors: {RED}{len(self.errors)}{NC}")
         
         if self.errors:
-            print(f"\n{RED}✗ VALIDATION FAILED{NC}")
+            print(f"\n{RED}[FAIL] VALIDATION FAILED{NC}")
             print("\nErrors:")
             for error in self.errors:
                 print(f"  • {error}")
         elif self.warnings:
-            print(f"\n{YELLOW}⚠ VALIDATION PASSED WITH WARNINGS{NC}")
+            print(f"\n{YELLOW}[!] VALIDATION PASSED WITH WARNINGS{NC}")
         else:
-            print(f"\n{GREEN}✓ ALL VALIDATION CHECKS PASSED{NC}")
+            print(f"\n{GREEN}[OK] ALL VALIDATION CHECKS PASSED{NC}")
 
 def main():
     validator = MixinConfigValidator()

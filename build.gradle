@@ -271,11 +271,11 @@ task validateMixins(type: Exec) {
     description = 'Validates that all mixins declared in JSON configs are present in the JAR'
     group = 'verification'
 
-    commandLine 'bash', 'scripts/validate_mixins.sh'
+    commandLine 'python3', 'scripts/validate_mixins.py'
 
     // Only run if script exists
     onlyIf {
-        file('scripts/validate_mixins.sh').exists()
+        file('scripts/validate_mixins.py').exists()
     }
 }
 

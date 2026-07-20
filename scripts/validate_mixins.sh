@@ -10,8 +10,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Find JAR file
-JAR_FILE=$(find build/libs -name "*.jar" -type f | grep -v sources | head -1)
+# Find JAR file (compatible with both Unix and Windows/Git Bash)
+JAR_FILE=$(ls build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
 
 if [ ! -f "$JAR_FILE" ]; then
     echo -e "${RED}ERROR: No JAR file found in build/libs/${NC}"
