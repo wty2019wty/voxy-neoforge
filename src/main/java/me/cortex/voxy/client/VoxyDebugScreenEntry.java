@@ -3,21 +3,24 @@ package me.cortex.voxy.client;
 import me.cortex.voxy.client.core.IGetVoxyRenderSystem;
 import me.cortex.voxy.client.core.VoxyRenderSystem;
 import me.cortex.voxy.commonImpl.VoxyCommon;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
-import net.minecraft.client.gui.components.debug.DebugScreenEntry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoxyDebugScreenEntry implements DebugScreenEntry {
-    @Override
-    public void display(DebugScreenDisplayer lines, @Nullable Level world, @Nullable LevelChunk clientChunk, @Nullable LevelChunk chunk) {
+/**
+ * NeoForge 1.21.1 debug screen integration for Voxy.
+ * MC 1.21.1 没有 DebugScreenEntry/DebugScreenEntryList（后续版本才引入），
+ * 改为监听 CustomizeGuiOverlayEvent.DebugText 向 F3 左侧信息注入 Voxy 统计。
+ */
+@EventBusSubscriber(modid = "voxy", value = Dist.CLIENT)
+public class VoxyDebugScreenEntry {
+    @SubscribeEvent
+    public static void onDebugText(CustomizeGuiOverlayEvent.DebugText event) {
         if (!VoxyCommon.isAvailable()) {
             return;
         }
@@ -27,21 +30,19 @@ public class VoxyDebugScreenEntry implements DebugScreenEntry {
             return;
         }
 
-        VoxyRenderSystem vrs = null;
+        List<String> lines = new ArrayList<>();
+        instance.addDebug(lines);
+
         var wr = Minecraft.getInstance().levelRenderer;
-        if (wr != null) vrs = ((IGetVoxyRenderSystem) wr).getVoxyRenderSystem();
+        if (wr instanceof IGetVoxyRenderSystem igr) {
+            VoxyRenderSystem vrs = igr.getVoxyRenderSystem();
+            if (vrs != null) {
+                vrs.addDebugInfo(lines);
+            }
+        }
 
-        //lines.addLineToSection();
-        List<String> instanceLines = new ArrayList<>();
-        instance.addDebug(instanceLines);
-        lines.addToGroup(ResourceLocation.fromNamespaceAndPath("voxy", "instance_debug"), instanceLines);
-
-        if (vrs != null) {
-            List<String> renderLines = new ArrayList<>();
-            vrs.addDebugInfo(renderLines);
-            lines.addToGroup(ResourceLocation.fromNamespaceAndPath("voxy", "render_debug"), renderLines);
+        if (!lines.isEmpty()) {
+            event.getLeft().addAll(lines);
         }
     }
-
-
 }
