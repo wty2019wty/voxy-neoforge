@@ -35,6 +35,8 @@ public abstract class MixinLevelRenderer implements IGetVoxyRenderSystem {
     @Inject(method = "allChanged()V", at = @At("RETURN"), order = 900)//We want to inject before sodium
     private void reloadVoxyRenderer(CallbackInfo ci) {
         this.shutdownRenderer();
+        // 重置失败标记：allChanged 是显式重载，无论之前是否失败都应重新尝试创建
+        this.voxy$rendererCreationFailed = false;
         if (this.level != null) {
             this.voxy$tryCreateRenderer();
         }
@@ -84,10 +86,13 @@ public abstract class MixinLevelRenderer implements IGetVoxyRenderSystem {
     public void createRenderer() {
         if (this.renderer != null) throw new IllegalStateException("Cannot have multiple renderers");
         if (!VoxyConfig.CONFIG.enabled) {
+            // 标记失败避免每 tick 重试刷屏；配置改动会通过 allChanged() 重置该标记
+            this.voxy$rendererCreationFailed = true;
             Logger.info("Not creating renderer due to disabled");
             return;
         }
         if (!VoxyConfig.CONFIG.isRenderingEnabled()) {
+            this.voxy$rendererCreationFailed = true;
             Logger.info("Not creating renderer due to disabled rendering");
             return;
         }
