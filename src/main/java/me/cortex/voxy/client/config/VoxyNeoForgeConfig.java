@@ -7,7 +7,10 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ModConfigSpec;
+
+import java.nio.file.Files;
 
 /**
  * NeoForge config integration for Voxy.
@@ -118,8 +121,16 @@ public class VoxyNeoForgeConfig {
     @SubscribeEvent
     public static void onConfigLoad(ModConfigEvent.Loading event) {
         if (event.getConfig().getSpec() == SPEC) {
-            syncToVoxyConfig();
+            // 仅当 JSON 配置尚不存在（首次启动）时，才用 TOML 默认值初始化。
+            // 否则保留 VoxyConfig(JSON) 中已保存的设置，避免每次启动被旧 TOML 值覆盖。
+            if (!voxyJsonConfigExists()) {
+                syncToVoxyConfig();
+            }
         }
+    }
+
+    private static boolean voxyJsonConfigExists() {
+        return Files.exists(FMLPaths.CONFIGDIR.get().resolve("voxy-config.json"));
     }
 
     @SubscribeEvent
