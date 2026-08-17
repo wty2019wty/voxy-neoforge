@@ -65,10 +65,10 @@ public class VoxyConfig {
             config.save();
             return config;
         } else {
-            var config = new VoxyConfig();
-            config.enabled = false;
-            config.enableRendering = false;
-            return config;
+            // Factory 尚未就绪（如游戏启动早期即首次访问本配置）时，
+            // 不要将 enabled 置为 false 并保存到磁盘，否则 Voxy 可用后配置仍被错误禁用。
+            // isRenderingEnabled() 内部已通过 VoxyCommon.isAvailable() 兜底禁用。
+            return new VoxyConfig();
         }
     }
 

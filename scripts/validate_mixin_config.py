@@ -52,11 +52,11 @@ class MixinConfigValidator:
         print(f"{BLUE}[1] Mixin Registration Coverage{NC}")
         
         # Read mixin configs
-        with open('src/main/resources/client.voxy.mixins.json') as f:
+        with open('src/main/resources/client.voxy.mixins.json', encoding='utf-8') as f:
             client_config = json.load(f)
             client_mixins = set(client_config.get('client', []))
         
-        with open('src/main/resources/common.voxy.mixins.json') as f:
+        with open('src/main/resources/common.voxy.mixins.json', encoding='utf-8') as f:
             common_config = json.load(f)
             common_mixins = set(common_config.get('mixins', []))
         
@@ -102,7 +102,7 @@ class MixinConfigValidator:
         print(f"{BLUE}[2] Build Exclusion Alignment{NC}")
         
         # Parse build.gradle exclusions
-        with open('build.gradle') as f:
+        with open('build.gradle', encoding='utf-8') as f:
             content = f.read()
             exclusions = re.findall(r"exclude\s+'([^']+)'", content)
         
@@ -130,7 +130,7 @@ class MixinConfigValidator:
                     continue
                 
                 filepath = os.path.join(root, file)
-                with open(filepath) as f:
+                with open(filepath, encoding='utf-8') as f:
                     content = f.read()
                 
                 # Extract @Mixin annotation
@@ -174,7 +174,7 @@ class MixinConfigValidator:
         
         for json_file in json_files:
             try:
-                with open(json_file) as f:
+                with open(json_file, encoding='utf-8') as f:
                     config = json.load(f)
                 
                 # Check required fields
