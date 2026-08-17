@@ -40,9 +40,9 @@ sourceSets {
             // Nvidium integration mixins
             exclude 'me/cortex/voxy/client/mixin/nvidium/**'
 
-            // Debug screen integration (API changed in MC 1.21.1)
-            exclude 'me/cortex/voxy/client/VoxyDebugScreenEntry.java'
-            exclude 'me/cortex/voxy/client/mixin/minecraft/MixinDebugScreenEntryList.java'
+            // Debug screen integration: rewritten for MC 1.21.1 using NeoForge's
+            // CustomizeGuiOverlayEvent.DebugText (DebugScreenEntry API did not exist yet in 1.21.1)
+            // Note: MixinDebugScreenEntryList.java was removed (targeted a non-existent class)
 
             // Sodium config integration mixin
             exclude 'me/cortex/voxy/client/mixin/sodium/MixinVideoSettingsScreen.java'
