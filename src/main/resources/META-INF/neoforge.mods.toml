@@ -33,6 +33,13 @@ ordering="AFTER"
 side="CLIENT"
 
 [[dependencies.voxy]]
+modId="iris"
+type="optional"
+versionRange="[1.8.0,)"
+ordering="AFTER"
+side="CLIENT"
+
+[[dependencies.voxy]]
 modId="fabric_api"
 type="required"
 versionRange="[0.102.0,)"
