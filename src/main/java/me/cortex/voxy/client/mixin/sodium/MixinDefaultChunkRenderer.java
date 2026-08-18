@@ -56,6 +56,14 @@ public abstract class MixinDefaultChunkRenderer extends ShaderChunkRenderer {
                 } else {
                     viewport = renderer.setupViewport(matrices, camera.x, camera.y, camera.z);
                 }
+                // Iris 路径下 viewport 尺寸依赖 beginLevelRendering 注入的 setupViewport 初始化，
+                // 但 VoxyRenderSystem 可能在首次渲染时（Iris beginLevelRendering -> allChanged）才被创建，
+                // 导致首帧 renderLevel@HEAD 未能捕获相机参数，viewport 宽高仍为 0，
+                // 进而在 IrisVoxyRenderPipeline.setup 中创建 0 尺寸深度纹理触发 framebuffer incomplete 崩溃。
+                // 这里对无效尺寸做兜底初始化（使用与 renderLevel@HEAD 相同的 Sodium 渲染矩阵）。
+                if (viewport != null && (viewport.width <= 0 || viewport.height <= 0)) {
+                    viewport = renderer.setupViewport(matrices, camera.x, camera.y, camera.z);
+                }
                 renderer.renderOpaque(viewport);
             }
         }
