@@ -194,6 +194,20 @@ public class VoxyRenderSystem {
         int width = dims[2];
         int height = dims[3];
 
+        // 防御：Iris 路径下 viewport 可能未经过 renderLevel 初始化（渲染器首帧在
+        // Iris beginLevelRendering -> allChanged 中被创建），此时 GL_VIEWPORT 可能是 0。
+        // 用主渲染目标/窗口尺寸兜底，避免后续创建 0 尺寸深度纹理触发 framebuffer incomplete。
+        if (width <= 0 || height <= 0) {
+            var mainTarget = Minecraft.getInstance().getMainRenderTarget();
+            if (mainTarget != null) {
+                width = mainTarget.width;
+                height = mainTarget.height;
+            } else {
+                width = Minecraft.getInstance().getWindow().getWidth();
+                height = Minecraft.getInstance().getWindow().getHeight();
+            }
+        }
+
         {//Apply render scaling factor
             var factor = this.pipeline.getRenderScalingFactor();
             if (factor != null) {
