@@ -25,13 +25,19 @@ public class VoxyClientEvents {
      *
      * Both vanilla terrain and Voxy LODs will render without fog-based distance fading.
      * This is the same approach used by Distant Horizons.
+     *
+     * 由配置项 useRenderFog 控制：
+     * false（默认）= 去掉原版渲染距离处的雾墙；
+     * true = 保留原版渲染雾，不修改雾参数。
      */
     @SubscribeEvent
     public static void onRenderFog(ViewportEvent.RenderFog event) {
-        // Only modify terrain fog when Voxy is enabled and rendering
+        // Only modify terrain fog when Voxy is enabled and rendering, and the
+        // user has not opted to keep the vanilla render fog.
         if (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN
                 && VoxyConfig.CONFIG.enabled
-                && VoxyConfig.CONFIG.enableRendering) {
+                && VoxyConfig.CONFIG.enableRendering
+                && !VoxyConfig.CONFIG.useRenderFog) {
 
             // Push fog to very large values (not MAX_VALUE to avoid shader math issues)
             // This removes the fog wall at vanilla render distance

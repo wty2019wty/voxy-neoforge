@@ -30,7 +30,15 @@ public class VoxyConfig {
     public int serviceThreads = (int) Math.max(CpuLayout.getCoreCount()/1.5, 1);
     public float subDivisionSize = 64;
     public boolean useEnvironmentalFog = true;
+    // 是否保留原版渲染距离雾（上游 useRenderFog）。
+    // false（默认）= 把地形雾推到无穷远，去掉原版渲染距离处的雾墙，让 LoD 平滑衔接；
+    // true = 保留原版渲染雾效果。
+    public boolean useRenderFog = false;
     public boolean dontUseSodiumBuilderThreads = false;
+
+    // 是否在 F3 调试界面显示 LoD 渲染统计（对应 RenderStatistics.enabled）。
+    // 需要持久化，否则每次重启都会丢失。
+    public boolean renderStatistics = false;
 
     // LOD boundary buffer: controls the safety margin between vanilla chunks and LOD rendering
     // Higher values = more overlap, prevents pop-in at chunk boundaries when flying

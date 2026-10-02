@@ -57,6 +57,9 @@
   "voxy.sodium.option.environmental_fog": "环境雾",
   "voxy.sodium.option.environmental_fog.tooltip": "对 LoD 地形应用环境雾效果",
 
+  "voxy.sodium.option.render_fog": "原版渲染雾",
+  "voxy.sodium.option.render_fog.tooltip": "保留原版渲染距离雾，而不是为 LoD 移除雾墙",
+
   "voxy.sodium.option.dont_use_sodium_threads": "独立线程池",
   "voxy.sodium.option.dont_use_sodium_threads.tooltip": "不与 Sodium 的区块构建器共享线程。如果出现卡顿请启用。",
 

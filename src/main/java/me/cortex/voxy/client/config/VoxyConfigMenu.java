@@ -127,9 +127,19 @@ public class VoxyConfigMenu implements ConfigEntryPoint {
                                         .setPostChangeFlags(RENDER_RELOAD)
                         ), new Group(
                                 new BoolOption(
+                                        "voxy:render_distance_fog",
+                                        Component.translatable("voxy.config.general.render_fog"),
+                                        ()->CFG.useRenderFog, v->CFG.useRenderFog=v)
+                                        .setPostChangeFlags(RENDER_RELOAD)
+                        ), new Group(
+                                new BoolOption(
                                         "voxy:render_debug",
                                         Component.translatable("voxy.config.general.render_statistics"),
-                                        ()-> RenderStatistics.enabled, v->RenderStatistics.enabled=v)
+                                        ()-> RenderStatistics.enabled, v->{
+                                            // 同时写回配置，保证重启后仍然生效
+                                            RenderStatistics.enabled=v;
+                                            CFG.renderStatistics=v;
+                                        })
                                         .setPostChangeFlags(RENDER_RELOAD))
                 ).setEnablerAND("voxy:enabled", "voxy:rendering"));
 

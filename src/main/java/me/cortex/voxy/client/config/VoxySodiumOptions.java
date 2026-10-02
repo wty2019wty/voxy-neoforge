@@ -123,6 +123,15 @@ public class VoxySodiumOptions {
                         )
                         .build())
                 .add(OptionImpl.createBuilder(boolean.class, storage)
+                        .setName(Component.translatable("voxy.sodium.option.render_fog"))
+                        .setTooltip(Component.translatable("voxy.sodium.option.render_fog.tooltip"))
+                        .setControl(TickBoxControl::new)
+                        .setBinding(
+                                (config, value) -> config.useRenderFog = value,
+                                config -> config.useRenderFog
+                        )
+                        .build())
+                .add(OptionImpl.createBuilder(boolean.class, storage)
                         .setName(Component.translatable("voxy.sodium.option.dont_use_sodium_threads"))
                         .setTooltip(Component.translatable("voxy.sodium.option.dont_use_sodium_threads.tooltip"))
                         .setControl(TickBoxControl::new)
@@ -146,8 +155,11 @@ public class VoxySodiumOptions {
                         .setTooltip(Component.translatable("voxy.sodium.option.render_statistics.tooltip"))
                         .setControl(TickBoxControl::new)
                         .setBinding(
-                                (config, value) -> RenderStatistics.enabled = value,
-                                config -> RenderStatistics.enabled
+                                (config, value) -> {
+                                    config.renderStatistics = value;
+                                    RenderStatistics.enabled = value;
+                                },
+                                config -> config.renderStatistics
                         )
                         .build())
                 .add(OptionImpl.createBuilder(int.class, storage)

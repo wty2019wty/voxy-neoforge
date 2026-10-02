@@ -57,6 +57,12 @@ public class VoxyNeoForgeConfig {
             .comment("Apply environmental fog to LOD terrain")
             .define("useEnvironmentalFog", true);
 
+    private static final ModConfigSpec.BooleanValue USE_RENDER_FOG = BUILDER
+            .comment("Keep the vanilla render-distance fog instead of pushing it to infinity",
+                     "false = remove the fog wall at vanilla render distance (default)",
+                     "true = keep the vanilla render fog")
+            .define("useRenderFog", false);
+
     // Advanced settings
     private static final ModConfigSpec.BooleanValue DONT_USE_SODIUM_BUILDER_THREADS = BUILDER
             .comment("Don't share threads with Sodium's chunk builder")
@@ -107,11 +113,13 @@ public class VoxyNeoForgeConfig {
         VoxyConfig.CONFIG.serviceThreads = SERVICE_THREADS.get();
         VoxyConfig.CONFIG.subDivisionSize = SUB_DIVISION_SIZE.get().floatValue();
         VoxyConfig.CONFIG.useEnvironmentalFog = USE_ENVIRONMENTAL_FOG.get();
+        VoxyConfig.CONFIG.useRenderFog = USE_RENDER_FOG.get();
         VoxyConfig.CONFIG.dontUseSodiumBuilderThreads = DONT_USE_SODIUM_BUILDER_THREADS.get();
         VoxyConfig.CONFIG.lodBoundaryBuffer = LOD_BOUNDARY_BUFFER.get();
         VoxyConfig.CONFIG.earthCurveRatio = EARTH_CURVE_RATIO.get();
 
-        // RenderStatistics is a runtime-only setting (not saved to JSON)
+        // 渲染调试统计：同时写回 VoxyConfig(JSON) 与运行时开关
+        VoxyConfig.CONFIG.renderStatistics = RENDER_STATISTICS.get();
         RenderStatistics.enabled = RENDER_STATISTICS.get();
 
         // Also save to the JSON config for compatibility
@@ -167,6 +175,10 @@ public class VoxyNeoForgeConfig {
 
     public static boolean useEnvironmentalFog() {
         return USE_ENVIRONMENTAL_FOG.get();
+    }
+
+    public static boolean useRenderFog() {
+        return USE_RENDER_FOG.get();
     }
 
     public static boolean dontUseSodiumBuilderThreads() {

@@ -57,6 +57,9 @@
   "voxy.sodium.option.environmental_fog": "Environmental Fog",
   "voxy.sodium.option.environmental_fog.tooltip": "Apply environmental fog effects to LOD terrain",
 
+  "voxy.sodium.option.render_fog": "Vanilla Render Fog",
+  "voxy.sodium.option.render_fog.tooltip": "Keep the vanilla render-distance fog instead of removing the fog wall for LODs",
+
   "voxy.sodium.option.dont_use_sodium_threads": "Separate Thread Pool",
   "voxy.sodium.option.dont_use_sodium_threads.tooltip": "Don't share threads with Sodium's chunk builder. Enable if you experience stuttering.",
 

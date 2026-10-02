@@ -1,5 +1,6 @@
 package me.cortex.voxy.client;
 
+import me.cortex.voxy.client.config.VoxyConfig;
 import me.cortex.voxy.common.world.WorldEngine;
 
 import java.util.Arrays;
@@ -7,7 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RenderStatistics {
-    public static boolean enabled = false;
+    // 从已保存的配置初始化，保证重新启动后调试统计开关仍然有效。
+    public static boolean enabled = VoxyConfig.CONFIG.renderStatistics;
 
     public static final int[] hierarchicalTraversalCounts = new int[WorldEngine.MAX_LOD_LAYER+1];
     public static final int[] hierarchicalRenderSections = new int[WorldEngine.MAX_LOD_LAYER+1];
