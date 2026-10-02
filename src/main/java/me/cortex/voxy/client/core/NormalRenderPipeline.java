@@ -1,5 +1,6 @@
 package me.cortex.voxy.client.core;
 
+import me.cortex.voxy.client.VoxyClientEvents;
 import me.cortex.voxy.client.config.VoxyConfig;
 import me.cortex.voxy.client.core.gl.GlFramebuffer;
 import me.cortex.voxy.client.core.gl.GlTexture;
@@ -104,14 +105,24 @@ public class NormalRenderPipeline extends AbstractRenderPipeline {
     @Override
     protected void finish(Viewport<?> viewport, int sourceFrameBuffer, int srcWidth, int srcHeight) {
         this.finalBlit.bind();
-        // MC 1.21.1 / Sodium 0.6.x: Environmental fog disabled
-        // FogParameters.environmental*() methods don't exist in Sodium 0.6.x
-        // RenderSystem.getShaderFog*() returns standard fog (underwater/lava) not environmental fog
-        // TODO: Research Sodium 0.6.x environmental fog API or implement custom distance-based fog
+        // 环境雾：Sodium 0.6.x 起删除了 FogParameters，这里改用 NeoForge 雾事件
+        // 在 VoxyClientEvents 中捕获的原版环境雾（水/岩浆/细雪等）。
+        // 着色器约定（blit_texture_depth_cutout.frag）：
+        //   endParams = vec4(1/(end-start), -start/(end-start), 1, 0)
+        //   fogColour = vec4(r, g, b, alpha)，alpha<=0 表示不应用
         if (this.useEnvFog) {
-            // Disable fog uniforms - set to zero (no fog effect)
-            glUniform4f(4, 0, 0, 0, 0);
-            glUniform4f(5, 0, 0, 0, 0);
+            if (VoxyClientEvents.envFogActive) {
+                float start = VoxyClientEvents.envFogStart;
+                float end = VoxyClientEvents.envFogEnd;
+                float delta = Math.max(end - start, 1.0e-4f);
+                glUniform4f(4, 1.0f / delta, -start / delta, 1.0f, 0.0f);
+                glUniform4f(5, VoxyClientEvents.envFogRed, VoxyClientEvents.envFogGreen,
+                        VoxyClientEvents.envFogBlue, 1.0f);
+            } else {
+                // 没有环境雾时禁用（alpha=0 时着色器直接跳过）
+                glUniform4f(4, 0, 0, 0, 0);
+                glUniform4f(5, 0, 0, 0, 0);
+            }
         }
 
         glBindTextureUnit(3, this.colourSSAOTex.id);
